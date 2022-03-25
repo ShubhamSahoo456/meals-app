@@ -4,11 +4,11 @@ import { StyleSheet, Text, View } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CategoryScreen from "./screens/CategoryScreen";
-import CategoryMealScreen from "./screens/CategoryMealScreen";
-import MealDetailsScreen from "./screens/MealDetailsScreen";
-import DrawerNavigation from "./navigation/Drawernavigation";
+import FavouriteContextProvider from "./store/context/favouriteContext";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import FavouriteScreen from "./screens/FavouriteScreen";
+import StackNavigation from "./navigation/BottomTabs";
+import { Ionicons } from "@expo/vector-icons";
 
 const fetchFonts = () => {
   Font.loadAsync({
@@ -17,7 +17,7 @@ const fetchFonts = () => {
   });
 };
 
-const Stack = createNativeStackNavigator();
+const BottonTabs = createBottomTabNavigator();
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -35,36 +35,50 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="MealsCategories"
-          screenOptions={{
-            headerStyle: { backgroundColor: "#351401" },
-            headerTintColor: "#ffffff",
-            contentStyle: { backgroundColor: "#3f2f25" },
-          }}
-        >
-          <Stack.Screen
-            name="AllCategories"
-            options={{ headerShown: false }}
-            component={DrawerNavigation}
-          />
-          <Stack.Screen
-            name="MealOverview"
-            options={({ navigation, route }) => {
-              return { headerTitle: route.params.item.title };
+      <FavouriteContextProvider>
+        <NavigationContainer>
+          <BottonTabs.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: "#351401" },
+              headerTintColor: "#ffffff",
+              tabBarActiveTintColor: "#3f2f25",
+              headerLeft: () => {
+                return (
+                  <Ionicons
+                    name="list"
+                    size={24}
+                    color="white"
+                    style={{ marginLeft: 20 }}
+                    onPress={() => navigation.openDrawer()}
+                  />
+                );
+              },
             }}
-            component={CategoryMealScreen}
-          />
-          <Stack.Screen
-            name="MealDetail"
-            options={({ navigation, route }) => {
-              return { headerTitle: route.params.item.title };
-            }}
-            component={MealDetailsScreen}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <BottonTabs.Screen
+              name="Category"
+              component={StackNavigation}
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="list" size={size} color={color} />
+                ),
+                sceneContainerStyle: { backgroundColor: "green" },
+              }}
+            />
+            <BottonTabs.Screen
+              name="favouritetab"
+              component={FavouriteScreen}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="star" size={size} color={color} />
+                ),
+                sceneContainerStyle: { backgroundColor: "green" },
+              }}
+            />
+          </BottonTabs.Navigator>
+        </NavigationContainer>
+      </FavouriteContextProvider>
     </>
   );
 }

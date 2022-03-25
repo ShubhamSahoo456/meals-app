@@ -3,6 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import CategoryScreen from "../screens/CategoryScreen";
 import FavouriteScreen from "../screens/FavouriteScreen";
 import { Ionicons } from "@expo/vector-icons";
+import BottomNavigation from "./BottomTabs";
 
 const Drawer = createDrawerNavigator();
 
