@@ -49,7 +49,7 @@ export default function App() {
                     size={24}
                     color="white"
                     style={{ marginLeft: 20 }}
-                    onPress={() => navigation.openDrawer()}
+                    onPress={() => {}}
                   />
                 );
               },
@@ -63,7 +63,6 @@ export default function App() {
                 tabBarIcon: ({ color, size }) => (
                   <Ionicons name="list" size={size} color={color} />
                 ),
-                sceneContainerStyle: { backgroundColor: "green" },
               }}
             />
             <BottonTabs.Screen
@@ -73,7 +72,6 @@ export default function App() {
                 tabBarIcon: ({ color, size }) => (
                   <Ionicons name="star" size={size} color={color} />
                 ),
-                sceneContainerStyle: { backgroundColor: "green" },
               }}
             />
           </BottonTabs.Navigator>
